@@ -50,29 +50,25 @@
   .cover-scene { display: none; }
   .cover::after { display: none; }
 
-  /* 오른쪽 대형 원형 장식 — 브랜드 블랙, 공간감 부여 */
-  .cover-deco-circle {
+  /* 우주 장식 — 토성 (우측 상단) */
+  .cover-deco-saturn {
     position: absolute;
-    width: 520px;
-    height: 520px;
-    background: var(--brand-black);
-    border-radius: 50%;
-    top: -120px;
-    right: -120px;
-    opacity: 0.08;
+    width: 560px;
+    height: 460px;
+    top: -100px;
+    right: -130px;
     pointer-events: none;
+    z-index: 0;
   }
-  /* 작은 원 */
-  .cover-deco-dot {
+  /* 우주 장식 — 작은 토성 (하단) */
+  .cover-deco-planet-sm {
     position: absolute;
-    width: 180px;
-    height: 180px;
-    background: var(--brand-black);
-    border-radius: 50%;
-    bottom: -40px;
-    right: 220px;
-    opacity: 0.06;
+    width: 210px;
+    height: 160px;
+    bottom: -30px;
+    right: 180px;
     pointer-events: none;
+    z-index: 0;
   }
 
   /* 네온 악센트 바 — 배경이 네온이므로 블랙으로 */
@@ -569,6 +565,8 @@
     .cover-orb { display: none !important; }
     .cover-scene { display: none !important; }
     .cover::after { display: none !important; }
+    .cover-deco-saturn,
+    .cover-deco-planet-sm { display: none !important; }
 
     /* 표지: A4 가로 한 장 */
     .cover {
@@ -712,9 +710,46 @@
 <div class="cover">
   <!-- 네온 바 (블랙) -->
   <div class="cover-neon-bar"></div>
-  <!-- 장식 원형 -->
-  <div class="cover-deco-circle"></div>
-  <div class="cover-deco-dot"></div>
+  <!-- 토성형 행성 실루엣 (우측 상단) -->
+  <svg class="cover-deco-saturn" viewBox="0 0 580 500" xmlns="http://www.w3.org/2000/svg">
+    <g opacity="0.09">
+      <!-- 별 실루엣들 — 5각 별 polygon (outer R=1, inner r=0.38) -->
+      <!-- points: 0,-1 0.2245,-0.3084 0.9511,-0.3090 0.3633,0.1180 0.5878,0.8090 0,0.38 -0.5878,0.8090 -0.3633,0.1180 -0.9511,-0.3090 -0.2245,-0.3084 -->
+      <polygon fill="#0b1215"
+        points="0,-1 0.2245,-0.3084 0.9511,-0.3090 0.3633,0.1180 0.5878,0.8090 0,0.38 -0.5878,0.8090 -0.3633,0.1180 -0.9511,-0.3090 -0.2245,-0.3084"
+        transform="translate(108, 55) scale(18)"/>
+      <polygon fill="#0b1215"
+        points="0,-1 0.2245,-0.3084 0.9511,-0.3090 0.3633,0.1180 0.5878,0.8090 0,0.38 -0.5878,0.8090 -0.3633,0.1180 -0.9511,-0.3090 -0.2245,-0.3084"
+        transform="translate(492, 48) scale(13)"/>
+      <polygon fill="#0b1215"
+        points="0,-1 0.2245,-0.3084 0.9511,-0.3090 0.3633,0.1180 0.5878,0.8090 0,0.38 -0.5878,0.8090 -0.3633,0.1180 -0.9511,-0.3090 -0.2245,-0.3084"
+        transform="translate(536, 210) scale(10)"/>
+      <polygon fill="#0b1215"
+        points="0,-1 0.2245,-0.3084 0.9511,-0.3090 0.3633,0.1180 0.5878,0.8090 0,0.38 -0.5878,0.8090 -0.3633,0.1180 -0.9511,-0.3090 -0.2245,-0.3084"
+        transform="translate(480, 400) scale(20)"/>
+      <polygon fill="#0b1215"
+        points="0,-1 0.2245,-0.3084 0.9511,-0.3090 0.3633,0.1180 0.5878,0.8090 0,0.38 -0.5878,0.8090 -0.3633,0.1180 -0.9511,-0.3090 -0.2245,-0.3084"
+        transform="translate(138, 430) scale(14)"/>
+      <!-- 고리들 — 동심 타원, stroke만 (5개 가는 선) -->
+      <ellipse fill="none" stroke="#0b1215" stroke-width="3.5" cx="290" cy="250" rx="196" ry="56"/>
+      <ellipse fill="none" stroke="#0b1215" stroke-width="2.5" cx="290" cy="250" rx="218" ry="63"/>
+      <ellipse fill="none" stroke="#0b1215" stroke-width="2"   cx="290" cy="250" rx="238" ry="70"/>
+      <ellipse fill="none" stroke="#0b1215" stroke-width="1.5" cx="290" cy="250" rx="256" ry="76"/>
+      <ellipse fill="none" stroke="#0b1215" stroke-width="1.5" cx="290" cy="250" rx="272" ry="82"/>
+      <!-- 행성 본체 — 고리 위에 올려 중앙 가려 실루엣 완성 -->
+      <circle fill="#0b1215" cx="290" cy="250" r="155"/>
+    </g>
+  </svg>
+
+  <!-- 작은 토성 실루엣 (하단) -->
+  <svg class="cover-deco-planet-sm" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+    <g opacity="0.07">
+      <ellipse fill="none" stroke="#0b1215" stroke-width="2.5" cx="100" cy="80" rx="78" ry="22"/>
+      <ellipse fill="none" stroke="#0b1215" stroke-width="2"   cx="100" cy="80" rx="90" ry="26"/>
+      <ellipse fill="none" stroke="#0b1215" stroke-width="1.5" cx="100" cy="80" rx="100" ry="30"/>
+      <circle fill="#0b1215" cx="100" cy="80" r="62"/>
+    </g>
+  </svg>
 
   <!-- 상단: 아하오호 로고 -->
   <div class="cover-top">
