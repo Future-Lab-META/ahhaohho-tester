@@ -295,21 +295,7 @@
     letter-spacing: 0.1em; text-transform: uppercase;
   }
 
-  .hd-right {
-    position: relative; z-index: 2;
-    display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
-  }
-  .hd-count-label {
-    font-family: 'Poppins', sans-serif;
-    font-size: 11px; font-weight: 700;
-    color: rgba(11,18,21,0.3);
-    letter-spacing: 0.12em; text-transform: uppercase;
-  }
-  .hd-count-num {
-    font-family: 'Poppins', sans-serif;
-    font-size: 72px; font-weight: 900;
-    color: var(--brand-black); opacity: 0.12; line-height: 1;
-  }
+  .hd-right { display: none; }
 
   /* Cards */
   .board-body { padding: 40px 64px 64px; }
@@ -405,12 +391,11 @@
           </div>
         </div>
         <div class="ig">
-          <label>날짜</label>
-          <input type="date" id="in-date" oninput="render()">
-        </div>
-        <div class="ig">
-          <label>챌린지명 (카드에 태그로 표시)</label>
-          <input type="text" id="in-challenge" placeholder="예: 바다 챌린지" oninput="render()">
+          <label>기간</label>
+          <div class="row2">
+            <input type="date" id="in-date-start" oninput="render()" placeholder="시작일">
+            <input type="date" id="in-date-end" oninput="render()" placeholder="종료일">
+          </div>
         </div>
       </div>
 
@@ -448,20 +433,25 @@ let nextId = 1;
 function getInfo() {
   const kisu = document.getElementById('in-kisu').value.trim();
   const week = document.getElementById('in-week').value.trim();
-  const dateRaw = document.getElementById('in-date').value;
-  const challenge = document.getElementById('in-challenge').value.trim();
-  let date = '';
-  if (dateRaw) {
-    const [y, m, d] = dateRaw.split('-');
-    date = `${y}.${m}.${d}`;
+  const startRaw = document.getElementById('in-date-start').value;
+  const endRaw = document.getElementById('in-date-end').value;
+  function fmt(raw) {
+    if (!raw) return '';
+    const [y, m, d] = raw.split('-');
+    return `${y}.${m}.${d}`;
   }
-  return { kisu, week, date, challenge };
+  const start = fmt(startRaw);
+  const end = fmt(endRaw);
+  let period = '';
+  if (start && end) period = `${start} ~ ${end}`;
+  else if (start) period = start;
+  return { kisu, week, period };
 }
 
 /* ── CARD ACTIONS ── */
 function addCard() {
   const id = nextId++;
-  cards.push({ id, image: null, name: '', reason: '' });
+  cards.push({ id, image: null, name: '', challenge: '', reason: '' });
   renderEditorCards();
   render();
 }
@@ -518,6 +508,10 @@ function renderEditorCards() {
         <input class="card-name-in" type="text" placeholder="이름"
           value="${escHtml(card.name)}"
           oninput="updateCard(${card.id},'name',this.value)">
+        <input class="card-name-in" type="text" placeholder="챌린지명 (예: 바다 챌린지)"
+          style="font-weight:400"
+          value="${escHtml(card.challenge)}"
+          oninput="updateCard(${card.id},'challenge',this.value)">
         <textarea class="card-reason-in" placeholder="선정 이유"
           oninput="updateCard(${card.id},'reason',this.value)">${escHtml(card.reason)}</textarea>
       </div>
@@ -531,8 +525,8 @@ function escHtml(str) {
 
 /* ── RENDER BOARD ── */
 function render() {
-  const { kisu, week, date, challenge } = getInfo();
-  const metaParts = [kisu, week, date].filter(Boolean);
+  const { kisu, week, period } = getInfo();
+  const metaParts = [kisu, week, period].filter(Boolean);
   const count = String(cards.length).padStart(2, '0');
 
   document.getElementById('board').innerHTML = `
@@ -569,7 +563,7 @@ function render() {
                 </div>
                 <div class="b-card-body">
                   <div class="b-card-name">${escHtml(card.name) || '이름'}</div>
-                  ${challenge ? `<div><span class="b-card-tag">${escHtml(challenge)}</span></div>` : ''}
+                  ${card.challenge ? `<div><span class="b-card-tag">${escHtml(card.challenge)}</span></div>` : ''}
                   <div class="b-card-reason">${escHtml(card.reason)}</div>
                 </div>
               </div>`).join('')}
@@ -597,7 +591,7 @@ window.addEventListener('resize', scaleBoard);
 
 /* ── EXPORT IMAGE ── */
 function exportImage() {
-  const { kisu, week } = getInfo();
+  const { kisu, week, period } = getInfo();
   const wrap = document.getElementById('board-scale-wrap');
   const prevTransform = wrap.style.transform;
   wrap.style.transform = 'scale(1)';
