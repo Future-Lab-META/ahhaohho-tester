@@ -438,7 +438,7 @@
     </div>
 
     <div class="editor-footer">
-      <button class="exp-btn primary" onclick="exportImage()">🖼️ 이미지로 저장</button>
+      <button class="exp-btn primary" onclick="exportImage()">🖼️ 이미지로 저장 (페이지별)</button>
       <button class="exp-btn secondary" onclick="window.print()">🖨️ PDF로 저장</button>
     </div>
   </aside>
@@ -645,38 +645,70 @@ function scaleBoard() {
 
 window.addEventListener('resize', scaleBoard);
 
-/* ── EXPORT IMAGE ── */
-function exportImage() {
+/* ── EXPORT IMAGE (페이지별 분할 저장) ── */
+async function exportImage() {
   const { kisu, week } = getInfo();
   const wrap = document.getElementById('board-scale-wrap');
   const board = document.getElementById('board');
   const prevTransform = wrap.style.transform;
   wrap.style.transform = 'scale(1)';
 
-  // 로고 img는 로컬 파일 환경에서 canvas taint 유발 → 캡처 중 숨김 처리
   const logo = board.querySelector('.board-logo');
   if (logo) logo.style.visibility = 'hidden';
 
-  html2canvas(board, {
+  const baseName = [kisu, week].filter(Boolean).join('_') || '시드프로젝트';
+
+  try {
+    // 페이지1: 헤더 + board-body
+    const p1 = makePageEl([
+      board.querySelector('.board-header'),
+      board.querySelector('.board-body'),
+    ]);
+    const c1 = await captureEl(p1);
+    p1.remove();
+    dlCanvas(c1, `${baseName}_시드프로젝트_1p.png`);
+
+    // 페이지2~: 각 continuation
+    const conts = board.querySelectorAll('.board-continuation');
+    for (let i = 0; i < conts.length; i++) {
+      const pEl = makePageEl([conts[i]]);
+      const c = await captureEl(pEl);
+      pEl.remove();
+      dlCanvas(c, `${baseName}_시드프로젝트_${i + 2}p.png`);
+    }
+
+  } catch (err) {
+    console.error('html2canvas error:', err);
+    alert('이미지 저장에 실패했어요. PDF로 저장해주세요.');
+  } finally {
+    wrap.style.transform = prevTransform;
+    if (logo) logo.style.visibility = '';
+  }
+}
+
+function makePageEl(domNodes) {
+  const el = document.createElement('div');
+  el.style.cssText = 'width:1200px;background:#FFF8F0;position:fixed;left:-9999px;top:0;z-index:-1;';
+  domNodes.forEach(n => { if (n) el.appendChild(n.cloneNode(true)); });
+  document.body.appendChild(el);
+  return el;
+}
+
+function captureEl(el) {
+  return html2canvas(el, {
     scale: 2,
     allowTaint: true,
     useCORS: false,
     backgroundColor: '#FFF8F0',
     logging: false,
-  }).then(canvas => {
-    wrap.style.transform = prevTransform;
-    if (logo) logo.style.visibility = '';
-    const a = document.createElement('a');
-    const name = [kisu, week].filter(Boolean).join('_') || '시드프로젝트';
-    a.download = `${name}_시드프로젝트.png`;
-    a.href = canvas.toDataURL('image/png');
-    a.click();
-  }).catch(err => {
-    wrap.style.transform = prevTransform;
-    if (logo) logo.style.visibility = '';
-    console.error('html2canvas error:', err);
-    alert('이미지 저장에 실패했어요.\n브라우저 주소창에 파일 경로(file://)가 아닌 로컬 서버로 열거나, PDF로 저장해주세요.');
   });
+}
+
+function dlCanvas(canvas, filename) {
+  const a = document.createElement('a');
+  a.download = filename;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
 }
 
 /* ── INIT ── */
