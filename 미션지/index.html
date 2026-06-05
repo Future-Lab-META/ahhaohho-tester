@@ -164,12 +164,12 @@
   /* mission section */
   .card-section { margin-bottom: 28px; }
   .card-section-title {
-    font-size: 13px; font-weight: 800; color: rgba(11,18,21,0.4);
-    letter-spacing: .1em; text-transform: uppercase;
+    font-size: 14px; font-weight: 800; color: rgba(11,18,21,0.75);
+    letter-spacing: .04em;
     margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
   }
   .card-section-title::after {
-    content: ''; flex: 1; height: 1px; background: rgba(11,18,21,0.1);
+    content: ''; flex: 1; height: 1.5px; background: rgba(11,18,21,0.12);
   }
   .mission-list { display: flex; flex-direction: column; gap: 10px; }
   .mission-item {
@@ -215,15 +215,15 @@
   }
   .completion-icon { font-size: 28px; flex-shrink: 0; }
   .completion-text-label {
-    font-size: 11px; font-weight: 700; color: rgba(237,255,75,0.6);
-    letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px;
+    font-size: 12px; font-weight: 700; color: rgba(237,255,75,0.85);
+    letter-spacing: .06em; margin-bottom: 6px;
   }
   .completion-text {
-    font-size: 18px; font-weight: 900; color: var(--brand-neon);
+    font-size: 19px; font-weight: 900; color: var(--brand-neon);
     line-height: 1.2;
   }
   .completion-sub {
-    font-size: 12px; color: rgba(237,255,75,0.5); margin-top: 4px;
+    font-size: 13px; color: rgba(237,255,75,0.75); margin-top: 4px;
   }
 </style>
 </head>
@@ -372,7 +372,7 @@ function buildPattern(weekNum) {
       </svg>`);
     }
   }
-  const overlay = `<div style="position:absolute;inset:0;background:rgba(255,245,232,0.58);z-index:1"></div>`;
+  const overlay = `<div style="position:absolute;inset:0;background:rgba(255,245,232,0.78);z-index:1"></div>`;
   return `<div class="card-bg-pattern" style="z-index:0">${items.join('')}${overlay}</div>`;
 }
 
