@@ -387,11 +387,14 @@
     .b-card { box-shadow: none; border: 1px solid #ebebeb; }
     .b-card-body { height: auto !important; overflow: visible !important; }
     .b-card-reason { overflow: visible !important; display: block !important; -webkit-line-clamp: unset !important; }
-    .board-body { padding: 28px 48px 32px; }
-    .board-row { gap: 16px; margin-bottom: 16px; }
+    .board-body { padding: 28px 48px 32px; break-after: avoid; page-break-after: avoid; }
+    .board-row { gap: 16px; margin-bottom: 16px; break-inside: avoid; }
+    #board { break-inside: avoid-page; }
     .board-continuation {
       break-before: page;
       page-break-before: always;
+      break-after: avoid;
+      page-break-after: avoid;
       padding: 28px 48px 32px;
     }
   }
