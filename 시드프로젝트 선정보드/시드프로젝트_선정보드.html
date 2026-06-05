@@ -248,7 +248,7 @@
 
   .board-header {
     background: var(--brand-neon);
-    padding: 64px 64px 72px;
+    padding: 88px 64px 96px;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -374,8 +374,6 @@
 
   /* ── PRINT ── */
   @media print {
-    @page :first { margin: 0; }
-    @page { margin: 16mm 0 0 0; }
     @page { margin: 0; size: A3 landscape; }
     body { overflow: visible; height: auto; }
     .app { display: block; height: auto; }
@@ -387,9 +385,14 @@
     .board-title em { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .b-card-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .b-card { box-shadow: none; border: 1px solid #ebebeb; }
+    /* 카드 높이 인쇄용 축소 — A3 기준 2행(6장) 맞춤 */
+    .b-card-body { height: 105px !important; }
+    .board-body { padding: 28px 48px 32px; }
+    .board-row { gap: 16px; margin-bottom: 16px; }
     .board-continuation {
       break-before: page;
       page-break-before: always;
+      padding: 28px 48px 32px;
     }
   }
 </style>
