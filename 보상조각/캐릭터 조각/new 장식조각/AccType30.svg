@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 24.13">
+  <defs>
+    <style>
+      .cls-1 {
+        mask: url(#mask);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <mask id="mask" x=".12" y=".2" width="47.88" height="23.94" maskUnits="userSpaceOnUse">
+      <g id="mask0_13264_3440-2" data-name="mask0 13264 3440">
+        <path class="cls-2" d="M48,24.13C48,10.91,37.28.2,24.06.2S.12,10.91.12,24.13h47.88Z"/>
+      </g>
+    </mask>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <g id="mask0_13264_3440" data-name="mask0 13264 3440">
+        <path class="cls-2" d="M48,24.13C48,10.91,37.28.2,24.06.2S.12,10.91.12,24.13h47.88Z"/>
+      </g>
+      <path class="cls-2" d="M47.95,24.13c-.25-13.37-10.89-24.13-23.98-24.13S.25,10.76,0,24.13h47.95Z"/>
+      <g class="cls-1">
+        <path d="M12.34,5.76c-3.54,3.54-3.54,9.28,0,12.82,3.54,3.54,9.28,3.54,12.82,0,3.54-3.54,3.54-9.28,0-12.82-3.54-3.54-9.28-3.54-12.82,0Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
