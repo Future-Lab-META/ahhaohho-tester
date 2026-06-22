@@ -578,8 +578,8 @@
                 <th>기수</th>
                 <th>상태</th>
                 <th>태깅일</th>
-                <th style="text-align:center">챌린지 시드</th>
-                <th style="text-align:center">자율창작 시드</th>
+                <th style="text-align:center">챌린지 피처드</th>
+                <th style="text-align:center">자율창작 피처드</th>
                 <th style="text-align:center">관리</th>
               </tr>
             </thead>
@@ -600,7 +600,7 @@
 
       <div class="page-header">
         <h1 class="page-title">프로젝트 관리</h1>
-        <p class="page-desc">게시물을 조회하고 프로젝트를 관리(시드 지정/숨김/삭제)합니다.</p>
+        <p class="page-desc">게시물을 조회하고 프로젝트를 관리(피처드 지정/숨김/삭제)합니다.</p>
       </div>
 
       <!-- 필터 -->
@@ -616,7 +616,7 @@
           <span id="post-count-summary" style="font-size:13px;color:#6b7280"></span>
           <label id="seed-filter-wrap" style="display:none; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#374151; user-select:none">
             <input type="checkbox" id="seed-only-checkbox" onchange="setSeedFilter(this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#050505">
-            🌱 시드만 보기
+            🌱 피처드만 보기
           </label>
         </div>
         <select class="select-sm" id="post-sort" onchange="renderPosts()">
@@ -640,8 +640,8 @@
                 <th style="width:40px">#</th>
                 <th>챌린지</th>
                 <th class="col-num" style="width:80px">게시물</th>
-                <th class="col-num" style="width:60px">시드</th>
-                <th style="width:110px">시드 현황</th>
+                <th class="col-num" style="width:60px">피처드</th>
+                <th style="width:110px">피처드 현황</th>
               </tr>
             </thead>
             <tbody id="challenge-stat-chips"></tbody>
@@ -940,7 +940,7 @@
 <!-- ── 시드 지정 모달 ── -->
 <div class="modal-overlay" id="modal-seed">
   <div class="modal">
-    <div class="modal-title">시드 프로젝트 지정</div>
+    <div class="modal-title">피처드 지정</div>
     <div id="seed-post-info" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;margin-bottom:20px;font-size:13px">
       <div id="seed-post-title" style="font-weight:700;color:#050505"></div>
       <div id="seed-post-meta" style="color:#9ca3af;margin-top:2px;font-size:12px"></div>
@@ -966,7 +966,7 @@
     </div>
     <div class="notif-preview">
       <strong>📬 알림 미리보기</strong><br>
-      "🌱 축하해요! 회원님의 작품이 시드 프로젝트로 선정되었어요."
+      "🌱 축하해요! 회원님의 작품이 피처드 프로젝트로 선정되었어요."
       <div class="notif-note">※ 알림 문구 상세는 화면 기획서 작성 예정</div>
     </div>
     <div class="modal-footer">
@@ -1552,6 +1552,10 @@ function switchPage(pageId, el) {
   document.getElementById('page-' + pageId).style.display = 'block';
   document.querySelectorAll('.snb-item').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
+  if (pageId === 'projects') {
+    const activeBtn = document.querySelector('#page-projects .cohort-btn.active');
+    if (activeBtn) setPostType(activeBtn.textContent.trim() === '챌린지' ? 'challenge' : 'free', activeBtn);
+  }
 }
 
 /* ── 프로젝트 관리 데이터 ── */
@@ -1628,12 +1632,11 @@ function renderChallengeStats() {
     const total = chPosts.length;
     const seeds = chPosts.filter(p => p.seedType).length;
     const hasSeed = seeds > 0;
-    const isFull = seeds >= 10;
     const isActive = activeCh === ch.id;
     const rowCls = [isActive ? 'ch-active' : '', !hasSeed ? 'no-seed-row' : ''].filter(Boolean).join(' ');
     const seedBadge = hasSeed
-      ? `<span class="cst-seed-badge seed-ok">✅ 확보 (${seeds}/10)</span>`
-      : `<span class="cst-seed-badge seed-none">⚠️ 미확보 (0/10)</span>`;
+      ? `<span class="cst-seed-badge seed-ok">✅ 확보 (${seeds})</span>`
+      : `<span class="cst-seed-badge seed-none">⚠️ 미확보</span>`;
     return `
       <tr class="${rowCls}" onclick="selectChallengeStat('${ch.id}')">
         <td style="color:#9ca3af;font-size:12px;text-align:center">${i + 1}</td>
@@ -1664,7 +1667,7 @@ function renderPosts() {
   const totalCount = data.length;
   const seedCount = data.filter(p => p.seedType).length;
   const summary = document.getElementById('post-count-summary');
-  if (summary) summary.textContent = `총 ${totalCount}개 · 시드 ${seedCount}개`;
+  if (summary) summary.textContent = `총 ${totalCount}개 · 피처드 ${seedCount}개`;
   if (seedFilter === 'seeded') data = data.filter(p => p.seedType);
   data.sort((a, b) => sort === 'desc' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date));
 
@@ -1678,7 +1681,7 @@ function renderPosts() {
       ? `<span class="badge" style="background:#dbeafe;color:#1e40af;font-size:10px">챌린지</span>`
       : `<span class="badge" style="background:#ede9fe;color:#6d28d9;font-size:10px">자율창작</span>`;
     const seedBadge = p.seedType
-      ? `<div class="post-seed-badge seed-challenge">🌱 시드</div>`
+      ? `<div class="post-seed-badge seed-challenge">🌱 피처드</div>`
       : '';
     const testerBadge = p.isTester
       ? `<span class="tester-badge is-tester">⭐ 체험단 ${p.cohort}기</span>`
@@ -1692,8 +1695,8 @@ function renderPosts() {
       : `<button class="btn-xs btn-xs-hide" onclick="openHideModal('${p.id}', 'hide')">숨김</button>`;
     const delBtn = `<button class="btn-xs btn-xs-del" onclick="openDeletePostModal('${p.id}')">삭제</button>`;
     const seedBtn = p.status === 'hidden' ? '' : p.seedType
-      ? `<button class="btn-xs" style="background:white;color:#166534;border:1px solid #86efac" onclick="unseed('${p.id}')">시드 해제</button>`
-      : `<button class="btn-xs btn-xs-seed" onclick="openSeedModal('${p.id}')">시드 지정</button>`;
+      ? `<button class="btn-xs" style="background:white;color:#166534;border:1px solid #86efac" onclick="unseed('${p.id}')">피처드 해제</button>`
+      : `<button class="btn-xs btn-xs-seed" onclick="openSeedModal('${p.id}')">피처드 지정</button>`;
 
     return `
       <div class="${cardCls}">
@@ -1748,13 +1751,13 @@ function openSeedModal(postId) {
   const typeInfo = document.getElementById('seed-type-info');
 
   if (p.type === 'challenge') {
-    typeInfo.textContent = '🌱 챌린지 게시물이므로 챌린지 시드로 지정됩니다.';
+    typeInfo.textContent = '🌱 챌린지 게시물이므로 챌린지 피처드로 지정됩니다.';
     wrap.style.display = 'block';
     // 현재 챌린지 미리 선택
     const sel = document.getElementById('seed-challenge-select');
     sel.value = p.challengeId || '';
   } else {
-    typeInfo.textContent = '🌱 자율 게시물이므로 자율 게시 시드로 지정됩니다.';
+    typeInfo.textContent = '🌱 자율 게시물이므로 자율 게시 피처드로 지정됩니다.';
     wrap.style.display = 'none';
   }
   openModal('modal-seed');
@@ -1766,19 +1769,12 @@ function confirmSeed() {
   if (p.type === 'challenge') {
     const challengeId = document.getElementById('seed-challenge-select').value;
     if (!challengeId) { alert('챌린지를 선택하세요.'); return; }
-    // 챌린지별 최대 5개 제한
-    const existingSeeds = posts.filter(x => x.seedType === 'challenge' && x.challengeId === challengeId).length;
-    if (existingSeeds >= 10) {
-      closeModal('modal-seed');
-      showToast('시드 프로젝트는 챌린지당 최대 10개까지 지정할 수 있어요');
-      return;
-    }
   }
   p.seedType = p.type === 'challenge' ? 'challenge' : 'free';
   closeModal('modal-seed');
   renderPosts();
   if (postTypeFilter === 'challenge') renderChallengeStats();
-  showToast(`🌱 ${p.author}의 게시물을 시드 프로젝트로 지정했어요`);
+  showToast(`🌱 ${p.author}의 게시물을 피처드로 지정했어요`);
 }
 
 /* ── 숨김/노출 ── */
@@ -1826,7 +1822,7 @@ function unseed(postId) {
   if (p) p.seedType = null;
   renderPosts();
   if (postTypeFilter === 'challenge') renderChallengeStats();
-  showToast(`${p ? p.author + '의 게시물' : '게시물'} 시드 지정을 해제했어요`);
+  showToast(`${p ? p.author + '의 게시물' : '게시물'} 피처드 해제했어요`);
 }
 
 /* ── 문의 데이터 ── */
