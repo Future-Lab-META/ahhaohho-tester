@@ -1154,10 +1154,6 @@ function showToast(msg) {
 }
 
 function savePDF() {
-  if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-    showToast('PDF 저장은 PC 웹에서만 사용할 수 있어요');
-    return;
-  }
   window.print();
 }
 </script>
