@@ -407,7 +407,7 @@ const WEEK_DATA = {
     { text:'다른 메이커 게시물에 댓글 5개 이상 달기', where:'<strong>갤러리 화면에서</strong> 게시물의 <strong>댓글 버튼을</strong> 눌러 작성할 수 있어!' },
     { text:'응원해주고 싶은 친구들의 게시물에 리액션 10번 이상 해보기', where:'<strong>갤러리 화면에서</strong> <strong>하트 버튼을</strong> 누르거나 1초간 꾸욱 눌러서 다양하게 반응할 수 있어!' },
   ], isCh:true },
-  8: { theme:'메이커 작품집 만들기', event:'#2차 온라인 밋업', missions:[
+  8: { theme:'아크크 작품집 만들기', event:'#2차 온라인 밋업', missions:[
     { text:'지금까지 만든 작품 다듬고 작품집 완성하기', where:'<strong>프로필 화면에서</strong> 지금까지 만든 작품을 확인하고 다듬을 수 있어!' },
   ], isCh:false },
 };
@@ -567,7 +567,7 @@ async function renderCard() {
     <div class="card-content">
       <div class="card-header">
         <span class="card-kisu">${kisuLabel}</span>
-        <img class="card-logo-img" src="../메이커작품집/Logo1.svg" onerror="this.style.display='none'">
+        <img class="card-logo-img" src="../아크크작품집/Logo1.svg" onerror="this.style.display='none'">
       </div>
       <div class="card-week-row">
         <span class="card-week-num">${week}</span>
@@ -709,7 +709,7 @@ async function renderFreeMissionCard() {
       <div style="position:relative;z-index:2;padding:52px 52px 60px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:40px">
           <span style="font-size:13px;font-weight:700;color:rgba(11,18,21,0.6);letter-spacing:.04em">${kisuLabel}</span>
-          <img style="height:36px;opacity:0.85" src="../메이커작품집/Logo1.svg" onerror="this.style.display='none'">
+          <img style="height:36px;opacity:0.85" src="../아크크작품집/Logo1.svg" onerror="this.style.display='none'">
         </div>
         <div style="font-size:28px;font-weight:900;color:#0B1215;letter-spacing:-0.5px;margin-bottom:6px">더 하고 싶다면?</div>
         <div style="font-size:14px;font-weight:500;color:rgba(11,18,21,0.45);margin-bottom:36px">미션 완료 후 여유가 있을 때 도전해봐요!</div>
