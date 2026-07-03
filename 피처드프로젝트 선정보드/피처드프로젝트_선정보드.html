@@ -324,13 +324,19 @@
   }
 
   .b-card-img {
-    width: 100%; aspect-ratio: 4/3;
+    width: 100%; position: relative; padding-bottom: 75%; /* 4:3 비율 (html2canvas 호환) */
     overflow: hidden;
     background: #ededed;
-    display: flex; align-items: center; justify-content: center;
   }
-  .b-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .b-card-img .no-img { font-size: 38px; opacity: 0.18; }
+  .b-card-img .bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+  }
+  .b-card-img .no-img {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px; opacity: 0.18;
+  }
 
   .b-card-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 8px; height: 160px; overflow: hidden; }
 
@@ -651,7 +657,7 @@ function cardHtml(card) {
   return `
     <div class="b-card">
       <div class="b-card-img">
-        ${card.image ? `<img src="${card.image}">` : `<div class="no-img">🖼️</div>`}
+        ${card.image ? `<div class="bg" style="background-image:url('${card.image}')"></div>` : `<div class="no-img">🖼️</div>`}
       </div>
       <div class="b-card-body">
         <div class="b-card-name">${escHtml(card.name) || '이름'}</div>
