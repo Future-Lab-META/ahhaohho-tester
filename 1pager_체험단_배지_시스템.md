@@ -45,7 +45,7 @@
 | 상황 | 처리 방식 |
 |------|-----------|
 | 중도 이탈 (자진) | 배지 유지. 프로필 영구, 갤러리·댓글은 기수 종료일 기준 30일까지 동일 적용 |
-| **탈락 처리** (운영자 조치) | `is_tester: false` 처리 → 모든 위치(프로필·갤러리·댓글)에서 즉시 비노출 |
+| **탈락 처리** (운영자 조치) | `crew_status: "dropped"` 처리 (is_crew는 true 유지) → 모든 위치(프로필·갤러리·댓글)에서 즉시 비노출 |
 | 탈락 후 재등록 | 별도 복귀 기능 없음. 어드민 "참여자 추가"로 재등록 시 배지 재부여되며 기수 기준 노출 기간 동일 적용 |
 | 참여 중 탈퇴 | 계정과 함께 소멸 (복구 불가) |
 
@@ -72,12 +72,24 @@
 
 ## 노출 조건 상세
 
+> **데이터 소스**: 앱은 프로필 조회 응답의 `crew` 블록으로 판정. 비크루는 `crew: null`.
+> ```
+> // GET /member/v2/profiles?userId={userId}
+> "crew": {
+>   "is_crew": true,          // 크루 참여 이력
+>   "crew_status": "active",  // active | dropped | completed
+>   "crew_program": "akk",
+>   "crew_cohort": "akk-1"
+> }
+> // 크루가 아니면 crew: null
+> ```
+
 **프로필**
-`is_tester = true`
+`crew_status = active 또는 completed` (탈락 제외, 기간 제한 없음)
 
 **갤러리·댓글**
-`is_tester = true` AND `오늘 ≤ cohort[tester_cohort].end_date + 30일`
-- `tester_cohort` 값으로 어드민 기수 테이블의 종료일을 조회해 계산
+`crew_status = active 또는 completed` AND `오늘 ≤ cohort[crew_cohort].end_date + 30일`
+- `crew_cohort` 값으로 어드민 기수 테이블의 종료일을 조회해 계산
 - 별도 user property 추가 없이 기존 구조 그대로 활용
 
 ---
@@ -86,9 +98,9 @@
 
 | 요건 | 내용 |
 |------|------|
-| 어드민 참여자 등록 시 배지 자동 부여 | 기수에 참여자 추가 → `is_tester: true`, `tester_cohort: n` 설정 |
-| 어드민 탈락 처리 시 배지 즉시 비노출 | `is_tester: false` 처리 → 프로필·갤러리·댓글 모든 위치 자동 비노출 |
-| 갤러리·댓글 노출 기간 자동 만료 | 앱이 `tester_cohort`로 기수 종료일 조회 → `오늘 > 종료일 + 30일`이면 비노출 |
+| 어드민 참여자 등록 시 배지 자동 부여 | 기수에 참여자 추가 → `is_crew: true`, `crew_status: "active"`, `crew_cohort: "akk-n"` 설정 |
+| 어드민 탈락 처리 시 배지 즉시 비노출 | `crew_status: "dropped"` 처리 → 프로필·갤러리·댓글 모든 위치 자동 비노출 |
+| 갤러리·댓글 노출 기간 자동 만료 | 앱이 `crew_cohort`로 기수 종료일 조회 → `오늘 > 종료일 + 30일`이면 비노출 |
 | 프로필 배지 표시 영역 | 디자인 확정 후 개발 |
 | 갤러리·댓글 배지 아이콘 | 닉네임 옆 소형 아이콘, 조건부 노출 |
 
