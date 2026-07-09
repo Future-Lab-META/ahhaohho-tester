@@ -218,6 +218,47 @@
   /* ─────────────────────────────
      WORKS SECTION
   ───────────────────────────── */
+  /* ─────────────────────────────
+     퓨처랩 피드백
+  ───────────────────────────── */
+  .feedback-section {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+  .feedback-card {
+    background: var(--brand-black);
+    color: #fff;
+    border-radius: 20px;
+    padding: 32px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .feedback-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: var(--brand-neon);
+    margin-bottom: 14px;
+  }
+  .feedback-body {
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 500;
+    color: rgba(255,255,255,0.92);
+    white-space: pre-wrap;
+  }
+  @media print {
+    .feedback-card {
+      background: #0B1215 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
   .works-section {
     max-width: 920px;
     margin: 0 auto;
@@ -871,6 +912,14 @@
       <div class="stat-chip">1기</div>
       <div class="stat-chip">2025.03.01 ~ 2025.05.16</div>
     </div>
+  </div>
+</div>
+
+<!-- ── 퓨처랩 피드백 ── -->
+<div class="feedback-section">
+  <div class="feedback-card">
+    <div class="feedback-label">✨ 퓨처랩이 전하는 이야기</div>
+    <div class="feedback-body">희준이의 작품에는 늘 "왜 그럴까?"라는 질문이 담겨 있었어요. 화산과 물의 순환을 직접 만들어보며 눈으로 확인하려는 태도가 인상적이었고, 실패해도 "다음엔 더 크게"라고 말하는 모습에서 진짜 메이커의 마음이 보였어요. 이번 아크크에서 쌓은 관찰과 도전의 경험이 앞으로의 창작에도 계속 이어지길 응원할게요. 🚀</div>
   </div>
 </div>
 

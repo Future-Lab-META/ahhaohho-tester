@@ -573,6 +573,7 @@
                 <th>등록일</th>
                 <th style="text-align:center">챌린지 피처드</th>
                 <th style="text-align:center">자율창작 피처드</th>
+                <th style="text-align:center">작품집 피드백</th>
                 <th style="text-align:center">관리</th>
               </tr>
             </thead>
@@ -930,6 +931,35 @@
   </div>
 </div>
 
+<!-- ── 퓨처랩 피드백 작성 모달 ── -->
+<div class="modal-overlay" id="modal-feedback">
+  <div class="modal" style="width:520px">
+    <div class="modal-title">퓨처랩 피드백 작성</div>
+    <div id="fb-member-info" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13px">
+      <div id="fb-member-name" style="font-weight:700;color:#050505"></div>
+      <div id="fb-member-meta" style="color:#9ca3af;margin-top:2px;font-size:12px"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">피드백 <span class="form-required">*</span></label>
+      <textarea id="fb-text" maxlength="500" rows="6"
+        style="width:100%;padding:10px 12px;font-size:13px;border:1px solid #d1d5db;border-radius:8px;resize:vertical;font-family:inherit;line-height:1.6;outline:none"
+        oninput="updateFbCount()" placeholder="아이의 활동을 관찰한 내용을 담아 작성해 주세요."></textarea>
+      <div style="display:flex;justify-content:space-between;margin-top:4px">
+        <span style="font-size:11px;color:#9ca3af">작품집은 전체 공개 웹이므로 실명·연락처 등 개인정보는 넣지 마세요.</span>
+        <span id="fb-count" style="font-size:11px;color:#9ca3af">0 / 500</span>
+      </div>
+    </div>
+    <div class="notif-preview">
+      <strong>💡 제출 시</strong><br>
+      제출하는 순간부터 해당 아이의 앱에 "아크크 작품집 만들기" 버튼이 노출됩니다. (최초 제출일로부터 90일간)
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-feedback')">취소</button>
+      <button class="btn-primary" onclick="submitFeedback()">제출하기</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── 시드 지정 모달 ── -->
 <div class="modal-overlay" id="modal-seed">
   <div class="modal">
@@ -1195,7 +1225,7 @@ function renderCohorts() {
 
 /* ── 목업 데이터 ── */
 let members = [
-  { id: 1, name: '이희준', nickname: '우주탐험가',  phone: '+82 10-1111-2222', cohort: 2, status: 'active',  taggedAt: '2026.06.10' },
+  { id: 1, name: '이희준', nickname: '우주탐험가',  phone: '+82 10-1111-2222', cohort: 2, status: 'active',  taggedAt: '2026.06.10', feedback: '희준이의 작품에는 늘 "왜 그럴까?"라는 질문이 담겨 있었어요. 이번 아크크에서 쌓은 관찰과 도전의 경험이 앞으로의 창작에도 이어지길 응원할게요. 🚀', feedbackDone: true, feedbackDate: '2026.06.20' },
   { id: 2, name: '김지민', nickname: '별빛소년',    phone: '+82 10-3333-4444', cohort: 2, status: 'active',  taggedAt: '2026.06.10' },
   { id: 3, name: '박서연', nickname: '로켓제작자',  phone: '+82 10-5555-6666', cohort: 2, status: 'active',  taggedAt: '2026.06.10' },
   { id: 4, name: '최민준', nickname: '달나라친구',  phone: '+82 10-7777-8888', cohort: 2, status: 'active',  taggedAt: '2026.06.11' },
@@ -1237,6 +1267,12 @@ function renderMembers(data) {
     const freeSeedCell = freeSeed > 0
       ? `<span class="post-seed-badge seed-idea" style="margin:0 auto">⭐ ${freeSeed}</span>`
       : `<span style="color:#d1d5db;font-size:13px">—</span>`;
+    const fbCell = m.feedbackDone
+      ? `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+           <span style="font-size:11px;font-weight:700;color:#166534;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:5px;padding:2px 8px">✅ 완료</span>
+           <button class="btn-xs" style="background:white;color:#374151;border:1px solid #d1d5db" onclick="openFeedbackModal(${m.id})">수정</button>
+         </div>`
+      : `<button class="btn-xs btn-xs-seed" onclick="openFeedbackModal(${m.id})">피드백 작성</button>`;
     return `
     <tr id="row-${m.id}">
       <td><strong>${m.name}</strong></td>
@@ -1246,6 +1282,7 @@ function renderMembers(data) {
       <td style="color:#9ca3af">${m.taggedAt}</td>
       <td style="text-align:center">${chSeedCell}</td>
       <td style="text-align:center">${freeSeedCell}</td>
+      <td style="text-align:center;white-space:nowrap">${fbCell}</td>
       <td style="text-align:center;white-space:nowrap">
         <button class="btn-danger" onclick="openDropConfirm(${m.id}, '${m.name}')">탈락</button>
       </td>
@@ -1335,6 +1372,37 @@ function confirmDrop() {
   dropTargetId = null;
   filterMembers();
   showToast(`${m ? m.name : '참여자'}을(를) 탈락 처리했어요`);
+}
+
+/* ── 퓨처랩 피드백 ── */
+let feedbackTargetId = null;
+function openFeedbackModal(id) {
+  feedbackTargetId = id;
+  const m = members.find(x => x.id === id);
+  if (!m) return;
+  document.getElementById('fb-member-name').textContent = `${m.name} (@${m.nickname})`;
+  document.getElementById('fb-member-meta').textContent = `${m.cohort}기` + (m.feedbackDone ? ` · 최초 제출 ${m.feedbackDate}` : ' · 미작성');
+  document.getElementById('fb-text').value = m.feedback || '';
+  updateFbCount();
+  openModal('modal-feedback');
+}
+function updateFbCount() {
+  const len = document.getElementById('fb-text').value.length;
+  document.getElementById('fb-count').textContent = `${len} / 500`;
+}
+function submitFeedback() {
+  const m = members.find(x => x.id === feedbackTargetId);
+  if (!m) return;
+  const text = document.getElementById('fb-text').value.trim();
+  if (!text) { alert('피드백 내용을 입력하세요.'); return; }
+  const isFirst = !m.feedbackDone;
+  m.feedback = text;
+  m.feedbackDone = true;
+  if (isFirst) m.feedbackDate = '방금'; // 최초 제출일 (프로토타입 표기)
+  closeModal('modal-feedback');
+  feedbackTargetId = null;
+  filterMembers();
+  showToast(isFirst ? `${m.name}의 피드백을 제출했어요 — 앱에 작품집 버튼 노출` : `${m.name}의 피드백을 수정했어요`);
 }
 
 /* ── 기수 추가 ── */
