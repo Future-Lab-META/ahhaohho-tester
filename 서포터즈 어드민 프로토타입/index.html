@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AhhaOhho Admin — 체험단 관리 (프로토타입)</title>
+<title>AhhaOhho Admin — 서포터즈 관리 (프로토타입)</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', sans-serif; background: white; color: #050505; min-height: 100vh; }
@@ -485,7 +485,7 @@
       <span class="snb-icon"></span>프로젝트 관리
     </a>
     <a class="snb-item active" href="#" onclick="switchPage('cheomdan', this); return false">
-      <span class="snb-icon"></span>체험단 관리
+      <span class="snb-icon"></span>서포터즈 관리
     </a>
     <a class="snb-item" href="#" onclick="return false">
       <span class="snb-icon"></span>사용자 관리
@@ -501,13 +501,13 @@
   <!-- MAIN -->
   <main class="main">
 
-  <!-- ── 체험단 관리 페이지 ── -->
+  <!-- ── 서포터즈 관리 페이지 ── -->
   <div id="page-cheomdan" class="page-wrap">
     <div class="content">
 
       <div class="page-header">
-        <h1 class="page-title">체험단 관리</h1>
-        <p class="page-desc">체험단 기수를 관리하고 참여자를 등록합니다.</p>
+        <h1 class="page-title">서포터즈 관리</h1>
+        <p class="page-desc">서포터즈 기수를 관리하고 참여자를 등록합니다.</p>
       </div>
 
       <!-- 탭 -->
@@ -922,7 +922,7 @@
     <div class="modal-title">탈락</div>
     <p class="modal-desc">
       <strong id="drop-target-name"></strong>님을 탈락 처리하시겠습니까?<br>
-      <span style="color:#dc2626">체험단 참여자 권한이 해제되고 목록에서 제거됩니다. 다시 참여시키려면 참여자 추가로 재등록해 주세요.</span>
+      <span style="color:#dc2626">서포터즈 참여자 권한이 해제되고 목록에서 제거됩니다. 다시 참여시키려면 참여자 추가로 재등록해 주세요.</span>
     </p>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modal-drop-confirm')">취소</button>
@@ -1729,7 +1729,7 @@ function renderPosts() {
       ? `<div class="post-seed-badge seed-challenge">⭐ 피처드</div>`
       : '';
     const crewBadge = p.isCrew
-      ? `<span class="crew-badge is-crew">체험단 ${p.cohort}기</span>`
+      ? `<span class="crew-badge is-crew">서포터즈 ${p.cohort}기</span>`
       : `<span class="crew-badge not-crew">일반 유저</span>`;
     const overlay = p.status === 'hidden'
       ? `<div class="post-thumb-overlay">숨겨짐</div>`
