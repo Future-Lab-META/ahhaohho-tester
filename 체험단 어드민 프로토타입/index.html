@@ -940,7 +940,7 @@
       <div id="fb-member-meta" style="color:#9ca3af;margin-top:2px;font-size:12px"></div>
     </div>
     <div class="form-group">
-      <label class="form-label">피드백 <span class="form-required">*</span></label>
+      <label class="form-label">피드백 <span style="font-size:11px;color:#9ca3af;font-weight:400">(선택 — 비워두면 작품집에 피드백 섹션 미노출)</span></label>
       <textarea id="fb-text" maxlength="500" rows="6"
         style="width:100%;padding:10px 12px;font-size:13px;border:1px solid #d1d5db;border-radius:8px;resize:vertical;font-family:inherit;line-height:1.6;outline:none"
         oninput="updateFbCount()" placeholder="아이의 활동을 관찰한 내용을 담아 작성해 주세요."></textarea>
@@ -1394,15 +1394,17 @@ function submitFeedback() {
   const m = members.find(x => x.id === feedbackTargetId);
   if (!m) return;
   const text = document.getElementById('fb-text').value.trim();
-  if (!text) { alert('피드백 내용을 입력하세요.'); return; }
   const isFirst = !m.feedbackDone;
-  m.feedback = text;
-  m.feedbackDone = true;
+  m.feedback = text; // 빈 문자열 허용 — 작품집에 피드백 섹션 미노출
+  m.feedbackDone = true; // 빈 상태여도 제출 완료로 처리 → 작품집 버튼 노출
   if (isFirst) m.feedbackDate = '방금'; // 최초 제출일 (프로토타입 표기)
   closeModal('modal-feedback');
   feedbackTargetId = null;
   filterMembers();
-  showToast(isFirst ? `${m.name}의 피드백을 제출했어요 — 앱에 작품집 버튼 노출` : `${m.name}의 피드백을 수정했어요`);
+  const msg = isFirst
+    ? (text ? `${m.name}의 피드백을 제출했어요 — 앱에 작품집 버튼 노출` : `${m.name} 피드백 없이 제출 완료 — 작품집 버튼 노출(피드백 섹션 미노출)`)
+    : `${m.name}의 피드백을 수정했어요`;
+  showToast(msg);
 }
 
 /* ── 기수 추가 ── */
