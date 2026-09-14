@@ -201,7 +201,7 @@
 
   .cover-title-main {
     font-family: 'Pretendard', sans-serif;
-    font-size: 72px;
+    font-size: 80px;
     font-weight: 900;
     color: #ffffff;
     line-height: 1.0;
@@ -232,7 +232,7 @@
 
   .cover-nickname {
     font-family: 'Pretendard', sans-serif;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 600;
     color: rgba(255,255,255,0.72);
     letter-spacing: 0.01em;
@@ -266,7 +266,7 @@
     border-radius: 6px;
     padding: 7px 15px;
     font-family: 'Poppins', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     letter-spacing: 0.01em;
   }
@@ -296,18 +296,22 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600;
     letter-spacing: 0.03em;
     color: var(--brand-neon);
     margin-bottom: 14px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   .feedback-body {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.75;
     font-weight: 500;
     color: rgba(255,255,255,0.92);
     white-space: pre-wrap;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   @media print {
     .feedback-card {
@@ -330,7 +334,7 @@
     margin-bottom: 32px;
   }
 
-  .section-title { font-size: 24px; font-weight: 600; }
+  .section-title { font-size: 28px; font-weight: 600; }
 
   .section-count {
     background: var(--brand-black);
@@ -602,15 +606,25 @@
     justify-content: center;
   }
   /* 챌린지명 = 모달 제목 */
+  /* 한글은 기본이 글자 단위 줄바꿈 → 어절(띄어쓰기) 단위로 끊기게 */
   .modal-challenge {
-    font-size: 24px;
-    font-weight: 900;
+    font-size: 32px;
+    font-weight: 600;
     line-height: 1.35;
     color: var(--text);
     margin-bottom: 18px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
-  .modal-desc { font-size: 16px; color: var(--text-sub); line-height: 1.8; margin-bottom: 20px; }
-  .modal-date { font-size: 14px; color: #bbb; }
+  .modal-desc {
+    font-size: 20px;
+    color: var(--text-sub);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  .modal-date { font-size: 18px; color: #bbb; }
 
   /* ─────────────────────────────
      토스트
@@ -764,6 +778,17 @@
       justify-content: flex-start;
       padding: 24px 28px 36px;
     }
+
+    /* 피드백: 모바일에서는 좌우 여백 없이 화면 가득 */
+    .feedback-section {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+    .feedback-card { border-radius: 0; }
+
+    /* 푸터: 모바일에서 하단 여백 추가 */
+    .app-cta { padding-bottom: 88px; }
   }
   @media (max-width: 480px) {
     .cards-grid { grid-template-columns: 1fr; }
@@ -814,6 +839,16 @@
     }
     /* 로고 필터 없음 — SVG가 이미 블랙+화이트 */
     .cover-logo-main { filter: none; }
+
+    /* 표지 메타: 인쇄에서는 한 단계 크게 */
+    .cover-title-main { font-size: 80px; }
+    .cover-eyebrow { font-size: 32px; }
+    .cover-nickname { font-size: 32px; }
+    .stat-chip {
+      font-size: 28px;
+      padding: 12px 26px;
+      border-radius: 10px;
+    }
 
     /* 프로젝트 섹션 */
     .works-section { padding: 0; max-width: 100%; }
@@ -896,19 +931,42 @@
       overflow: hidden;
     }
 
-    .card-challenge { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+    /* 한글은 기본이 글자 단위 줄바꿈 → 어절(띄어쓰기) 단위로 끊기게 */
+    .card-challenge {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
     .card-title { font-size: 24px; margin-bottom: 12px; }
     .card-desc {
-      font-size: 14px;
+      font-size: 24px;
+      color: var(--text-main);
       line-height: 1.8;
+      word-break: keep-all;
+      overflow-wrap: break-word;
       -webkit-line-clamp: unset;
       display: block;
       overflow: visible;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
-    .card-date { font-size: 14px; }
+    .card-date { font-size: 20px; }
+
+    /* 퓨처랩 피드백: 프로젝트 제목·본문과 같은 크기 */
+    .feedback-section { padding-top: 72px; }  /* 기본 48px + 24px */
+    .feedback-label {
+      font-size: 32px;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    .feedback-body {
+      font-size: 24px;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
 
     /* 마지막 카드 뒤 빈 페이지 방지 */
     .card:last-child {
@@ -1035,7 +1093,7 @@
 
     <!-- 사진 4장 (세로·가로·정사각·세로 혼합) -->
     <div class="card" onclick="openModal(this)"
-      data-challenge="화산 폭발 만들기"
+      data-challenge="폰으로 쓱쓱 쉽게 만드는 게임 그래픽"
       data-desc="식초랑 베이킹소다를 섞었더니 진짜로 거품이 넘쳐흘렀어요. 색깔을 빨간색으로 해서 용암처럼 보이게 했어요. 다음에는 더 큰 화산을 만들어보고 싶어요!"
       data-date="2025.05.16">
       <div class="card-media">
@@ -1045,7 +1103,7 @@
         <div class="media-cell"><img src="이미지 리소스/44dd94514315cdee8a68119cf425a163.jpg" alt=""></div>
       </div>
       <div class="card-body">
-        <div class="card-challenge">화산 폭발 만들기</div>
+        <div class="card-challenge">폰으로 쓱쓱 쉽게 만드는 게임 그래픽</div>
         <div class="card-desc">식초랑 베이킹소다를 섞었더니 진짜로 거품이 넘쳐흘렀어요. 색깔을 빨간색으로 해서 용암처럼 보이게 했어요.</div>
         <div class="card-date">2025.05.16</div>
       </div>
