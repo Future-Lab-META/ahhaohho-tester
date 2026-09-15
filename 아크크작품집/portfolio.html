@@ -792,7 +792,11 @@
       padding-right: 0;
       padding-bottom: 0;
     }
-    .feedback-card { border-radius: 0; }
+    /* 하단 여백은 카드 안쪽(검정)으로 — 기본 32px + 24px */
+    .feedback-card {
+      border-radius: 0;
+      padding-bottom: 56px;
+    }
 
     /* 푸터: 모바일에서 하단 여백 추가 */
     .app-cta { padding-bottom: 88px; }
