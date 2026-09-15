@@ -555,24 +555,30 @@
   /* 점 인디케이터 (패들렛 스타일) */
   .carousel-dots {
     position: absolute;
-    bottom: 14px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 6px;
+    gap: 7px;
     align-items: center;
+    /* 밝은 이미지 위에서도 보이도록 반투명 흰 배경 */
+    padding: 8px 12px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     pointer-events: none;
     z-index: 3;
   }
   .carousel-dot {
-    height: 6px;
-    border-radius: 3px;
-    background: rgba(0,0,0,0.18);
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.28);
     transition: width 0.2s ease, background 0.2s ease;
-    width: 6px;
+    width: 8px;
   }
   .carousel-dot.active {
-    width: 18px;              /* 활성 점은 길쭉하게 */
+    width: 24px;              /* 활성 점은 길쭉하게 */
     background: var(--brand-neon);
   }
 
@@ -784,6 +790,11 @@
       border-top: 1px solid #efefef;
       padding: 24px 28px 36px;
     }
+    /* 인디케이터: 모바일에서는 기존(작은) 사이즈 유지 */
+    .carousel-dots { bottom: 24px; gap: 6px; padding: 6px 10px; }
+    .carousel-dot { width: 6px; height: 6px; border-radius: 3px; }
+    .carousel-dot.active { width: 18px; }
+
     /* 모바일에서는 항상 위에서부터 */
     .modal-body > :first-child { margin-top: 0; }
     .modal-body > :last-child { margin-bottom: 0; }
