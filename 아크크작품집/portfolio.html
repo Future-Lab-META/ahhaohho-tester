@@ -795,9 +795,15 @@
     .carousel-dot { width: 6px; height: 6px; border-radius: 3px; }
     .carousel-dot.active { width: 18px; }
 
-    /* 모바일에서는 항상 위에서부터 */
+    /* 모달 타이포: 모바일에서는 한 단계 작게 */
+    .modal-challenge { font-size: 24px; }
+    .modal-desc { font-size: 18px; }
+    .modal-date { font-size: 16px; }
+
+    /* 모바일에서는 항상 위에서부터 (제목이 비어 있을 때도 동일) */
     .modal-body > :first-child { margin-top: 0; }
     .modal-body > :last-child { margin-bottom: 0; }
+    .modal-challenge:empty + .modal-desc { margin-top: 0; }
 
     /* 피드백: 모바일에서는 좌우 여백 없이 화면 가득 */
     .feedback-section {
