@@ -442,7 +442,7 @@
   .card-challenge {
     display: block;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--text);
     line-height: 1.4;
     margin-bottom: 6px;
@@ -598,17 +598,22 @@
   .modal-body {
     flex: 1;
     height: 100%;
+    min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 48px 44px;
     border-left: 1px solid #efefef;
     display: flex;
     flex-direction: column;
-    justify-content: center;
   }
+  /* 내용이 짧으면 세로 중앙, 넘치면 위에서부터 스크롤
+     (justify-content: center는 넘칠 때 위쪽이 잘려 스크롤로 닿지 않음) */
+  .modal-body > :first-child { margin-top: auto; }
+  .modal-body > :last-child { margin-bottom: auto; }
   /* 챌린지명 = 모달 제목 */
   /* 한글은 기본이 글자 단위 줄바꿈 → 어절(띄어쓰기) 단위로 끊기게 */
   .modal-challenge {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 600;
     line-height: 1.35;
     color: var(--text);
@@ -617,14 +622,14 @@
     overflow-wrap: break-word;
   }
   .modal-desc {
-    font-size: 20px;
+    font-size: 22px;
     color: var(--text-sub);
     line-height: 1.8;
     margin-bottom: 20px;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
-  .modal-date { font-size: 18px; color: #bbb; }
+  .modal-date { font-size: 20px; color: #bbb; }
 
   /* ─────────────────────────────
      토스트
@@ -775,9 +780,11 @@
       flex: 1;
       border-left: none;
       border-top: 1px solid #efefef;
-      justify-content: flex-start;
       padding: 24px 28px 36px;
     }
+    /* 모바일에서는 항상 위에서부터 */
+    .modal-body > :first-child { margin-top: 0; }
+    .modal-body > :last-child { margin-bottom: 0; }
 
     /* 피드백: 모바일에서는 좌우 여백 없이 화면 가득 */
     .feedback-section {
@@ -785,7 +792,11 @@
       padding-right: 0;
       padding-bottom: 0;
     }
-    .feedback-card { border-radius: 0; }
+    /* 하단 여백은 카드 안쪽(검정)으로 — 기본 32px + 24px */
+    .feedback-card {
+      border-radius: 0;
+      padding-bottom: 56px;
+    }
 
     /* 푸터: 모바일에서 하단 여백 추가 */
     .app-cta { padding-bottom: 88px; }
@@ -872,9 +883,9 @@
     }
     .card:hover { transform: none; box-shadow: none; }
 
-    /* 이미지 영역: 좌측 62% */
+    /* 이미지 영역: 좌측 60% */
     .card-media {
-      width: 62%;
+      width: 60%;
       height: 210mm;
       flex-shrink: 0;
       display: grid !important;
@@ -918,7 +929,7 @@
       min-height: 0;
     }
 
-    /* 텍스트 영역: 우측 38% */
+    /* 텍스트 영역: 우측 40% */
     .card-body {
       flex: 1;
       height: 100%;
@@ -933,7 +944,7 @@
 
     /* 한글은 기본이 글자 단위 줄바꿈 → 어절(띄어쓰기) 단위로 끊기게 */
     .card-challenge {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 600;
       margin-bottom: 24px;
       word-break: keep-all;
@@ -941,9 +952,9 @@
     }
     .card-title { font-size: 24px; margin-bottom: 12px; }
     .card-desc {
-      font-size: 24px;
+      font-size: 22px;
       color: var(--text-main);
-      line-height: 1.8;
+      line-height: 1.5;
       word-break: keep-all;
       overflow-wrap: break-word;
       -webkit-line-clamp: unset;
@@ -1094,7 +1105,7 @@
     <!-- 사진 4장 (세로·가로·정사각·세로 혼합) -->
     <div class="card" onclick="openModal(this)"
       data-challenge="폰으로 쓱쓱 쉽게 만드는 게임 그래픽"
-      data-desc="식초랑 베이킹소다를 섞었더니 진짜로 거품이 넘쳐흘렀어요. 색깔을 빨간색으로 해서 용암처럼 보이게 했어요. 다음에는 더 큰 화산을 만들어보고 싶어요!"
+      data-desc="처음에는 게임 그래픽을 만들려면 컴퓨터가 꼭 있어야 한다고 생각했어요. 그런데 폰에 있는 그림 앱만으로도 캐릭터랑 배경을 충분히 그릴 수 있다는 걸 알게 됐어요. 먼저 종이에 쓱쓱 스케치를 하고, 그걸 사진으로 찍어서 앱에 불러온 다음 레이어를 나눠서 색을 칠했어요. 선과 색을 따로 두면 실수해도 쉽게 고칠 수 있어서 좋았어요. 캐릭터가 움직이는 것처럼 보이게 하려고 같은 그림을 조금씩 다르게 여러 장 그려서 이어붙여 봤는데, 생각보다 자연스러워서 정말 신기했어요. 색을 고를 때는 배경과 캐릭터의 밝기를 다르게 잡아야 서로 묻히지 않는다는 것도 배웠어요. 다음에는 직접 만든 캐릭터로 간단한 게임을 만들어서 친구들에게 보여주고 싶어요."
       data-date="2025.05.16">
       <div class="card-media">
         <div class="media-cell"><img src="이미지 리소스/f825731834598441028f447c90458887.jpg" alt=""></div>
@@ -1104,7 +1115,7 @@
       </div>
       <div class="card-body">
         <div class="card-challenge">폰으로 쓱쓱 쉽게 만드는 게임 그래픽</div>
-        <div class="card-desc">식초랑 베이킹소다를 섞었더니 진짜로 거품이 넘쳐흘렀어요. 색깔을 빨간색으로 해서 용암처럼 보이게 했어요.</div>
+        <div class="card-desc">처음에는 게임 그래픽을 만들려면 컴퓨터가 꼭 있어야 한다고 생각했어요. 그런데 폰에 있는 그림 앱만으로도 캐릭터랑 배경을 충분히 그릴 수 있다는 걸 알게 됐어요. 먼저 종이에 쓱쓱 스케치를 하고, 그걸 사진으로 찍어서 앱에 불러온 다음 레이어를 나눠서 색을 칠했어요. 선과 색을 따로 두면 실수해도 쉽게 고칠 수 있어서 좋았어요. 캐릭터가 움직이는 것처럼 보이게 하려고 같은 그림을 조금씩 다르게 여러 장 그려서 이어붙여 봤는데, 생각보다 자연스러워서 정말 신기했어요. 색을 고를 때는 배경과 캐릭터의 밝기를 다르게 잡아야 서로 묻히지 않는다는 것도 배웠어요. 다음에는 직접 만든 캐릭터로 간단한 게임을 만들어서 친구들에게 보여주고 싶어요.</div>
         <div class="card-date">2025.05.16</div>
       </div>
     </div>
