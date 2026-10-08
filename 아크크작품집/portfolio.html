@@ -1277,7 +1277,7 @@
 <!-- ── 퓨처랩 피드백 ── -->
 <div class="feedback-section">
   <div class="feedback-card">
-    <div class="feedback-label" id="feedbackLabel">✨ 이희준은 어떤 메이커인가요?</div>
+    <div class="feedback-label" id="feedbackLabel">✨ 아하오호가 전하는 말</div>
     <div class="feedback-body">희준이의 프로젝트에는 늘 "왜 그럴까?"라는 질문이 담겨 있었어요. 화산과 물의 순환을 직접 만들어보며 눈으로 확인하려는 태도가 인상적이었고, 실패해도 "다음엔 더 크게"라고 말하는 모습에서 진짜 메이커의 마음이 보였어요. 이번 아크크에서 쌓은 관찰과 도전의 경험이 앞으로의 창작에도 계속 이어지길 응원할게요. 🚀</div>
   </div>
 </div>
@@ -1492,20 +1492,6 @@ async function loadCoverNickname() {
   } catch (e) { /* 실패 시 자리표시자 유지 */ }
 }
 document.addEventListener('DOMContentLoaded', loadCoverNickname);
-
-// 피드백 라벨: 타이틀 이름 + 조사(은/는) 자동 → "{이름}은/는 어떤 창작자인가요?"
-function syncFeedbackLabel() {
-  const label = document.getElementById('feedbackLabel');
-  const titleEl = document.querySelector('.cover-title-main');
-  if (!label || !titleEl) return;
-  const name = titleEl.textContent.trim();
-  if (!name) return;
-  const last = name.charCodeAt(name.length - 1);
-  const hasBatchim = last >= 0xAC00 && last <= 0xD7A3 && (last - 0xAC00) % 28 !== 0;
-  const josa = hasBatchim ? '은' : '는';
-  label.textContent = '✨ ' + name + josa + ' 어떤 메이커인가요?';
-}
-document.addEventListener('DOMContentLoaded', syncFeedbackLabel);
 </script>
 </body>
 </html>
